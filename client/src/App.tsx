@@ -1,8 +1,8 @@
 import React from "react";
-import "./App.less";
+import styles from "./App.module.less";
 
 function App() {
-  return <div className="App"></div>;
+  return <div className={styles.App}></div>;
 }
 
 export default App;
