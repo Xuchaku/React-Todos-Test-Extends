@@ -1,6 +1,7 @@
 @import "./../../global/global.less";
 .Todo {
-  width: auto;
+  width: 100%;
+  min-width: 400px;
   padding: 16px;
   background-color: white;
   display: flex;
@@ -24,9 +25,28 @@
     margin-bottom: 24px;
   }
 }
+.TodoComplete {
+  background: rgb(255, 255, 255);
+  position: relative;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 89%,
+    rgba(170, 255, 153, 1) 100%
+  );
+}
+.Files {
+  display: flex;
+  column-gap: 10px;
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: @bg-ui;
+  }
+}
 .MainInfo {
   display: flex;
   margin-bottom: 8px;
+  align-items: center;
   .RightAction {
     margin-left: auto;
   }
