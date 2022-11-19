@@ -1,0 +1,40 @@
+@import "./../../global/global.less";
+.Todo {
+  width: auto;
+  padding: 16px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  & > :last-child {
+    align-self: flex-end;
+  }
+  .Header {
+    color: @font-dark-color;
+    font-family: @family-headers;
+    font-weight: 200;
+  }
+  .TextDate {
+    color: @font-gray-color;
+    font-family: @family-body-text;
+    margin-bottom: 24px;
+  }
+  .Text {
+    color: @font-dark-color;
+    font-family: @family-body-text;
+    margin-bottom: 24px;
+  }
+}
+.MainInfo {
+  display: flex;
+  margin-bottom: 8px;
+  .RightAction {
+    margin-left: auto;
+  }
+  svg {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    fill: @bg-ui;
+    margin-right: 12px;
+  }
+}
