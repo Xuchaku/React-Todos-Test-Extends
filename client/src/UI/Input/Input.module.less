@@ -1,0 +1,21 @@
+@import "./../../global/global.less";
+.Input {
+  padding: 18px 16px;
+  background-color: @bg-body;
+  color: @font-dark-color;
+  border: none;
+  min-width: 400px;
+  width: 100%;
+  font-family: @family-headers;
+  outline: none;
+  font-size: 18px;
+  border-bottom: 2px solid @font-dark-color;
+}
+.Error {
+  border-bottom: 2px solid red;
+}
+.Input + p {
+  color: red;
+  font-size: 12px;
+  font-family: @family-body-text;
+}

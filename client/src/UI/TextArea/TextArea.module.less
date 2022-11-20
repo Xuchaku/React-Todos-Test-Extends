@@ -1,0 +1,20 @@
+@import "./../../global/global.less";
+.TextArea {
+  padding: 18px 16px;
+  background-color: @bg-body;
+  color: @font-dark-color;
+  border: none;
+  min-width: 400px;
+  width: 100%;
+  font-family: @family-headers;
+  outline: none;
+  font-size: 18px;
+}
+.Error {
+  border-bottom: 2px solid red;
+}
+.TextArea + p {
+  color: red;
+  font-size: 12px;
+  font-family: @family-body-text;
+}

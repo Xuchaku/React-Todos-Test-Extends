@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import FormTodo from "../../components/FormTodo/FormTodo";
 import Todo from "../../components/Todo/Todo";
 import ITodo from "../../types/ITodo/ITodo";
 import Button from "../../UI/Button/Button";
@@ -23,19 +24,26 @@ const TodosList = () => {
   function openModal() {
     setIsOpen(true);
   }
+  function addTodo(todo: ITodo) {
+    setTodos([...todos, todo]);
+  }
   const [isOpen, setIsOpen] = useState(true);
   return (
     <>
       <Popup onClose={closePopup} isOpened={isOpen}>
-        str
+        <FormTodo todos={todos} submit={addTodo} />
       </Popup>
       <div className={styles.Container}>
         <Button shape="cirle" onClick={openModal}>
           +
         </Button>
-        {todos.map((todo) => {
-          return <Todo key={todo.id} options={todo} />;
-        })}
+        {todos.length > 0 ? (
+          todos.map((todo) => {
+            return <Todo key={todo.id} options={todo} />;
+          })
+        ) : (
+          <p>Текущих задач нет...</p>
+        )}
       </div>
     </>
   );
