@@ -34,6 +34,9 @@
     rgba(170, 255, 153, 1) 100%
   );
 }
+.TodoExpired {
+  opacity: 0.4;
+}
 .Files {
   display: flex;
   column-gap: 10px;
@@ -41,6 +44,9 @@
     width: 20px;
     height: 20px;
     fill: @bg-ui;
+  }
+  svg[disabled] {
+    fill: @font-dark-color;
   }
 }
 .MainInfo {
@@ -56,5 +62,8 @@
     height: 20px;
     fill: @bg-ui;
     margin-right: 12px;
+  }
+  svg[disabled] {
+    fill: @font-dark-color;
   }
 }

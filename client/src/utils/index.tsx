@@ -10,6 +10,8 @@ export const reducerTodo = (state: ITodo, action: Action): ITodo => {
       return { ...state, text: action.payload };
     case actionsName.SET_DATE_TODO:
       return { ...state, date: action.payload };
+    case actionsName.SET_FILES_TODO:
+      return { ...state, filesUrl: action.payload };
     default:
       return state;
   }
@@ -36,6 +38,9 @@ export const setTextTodo = (text: string): Action => {
 };
 export const setDateTodo = (date: Date): Action => {
   return { type: actionsName.SET_DATE_TODO, payload: date };
+};
+export const setFilesTodo = (files: string[]): Action => {
+  return { type: actionsName.SET_FILES_TODO, payload: files };
 };
 export const classes = (...args: string[]) => {
   return args.join(" ");

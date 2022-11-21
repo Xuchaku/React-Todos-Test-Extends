@@ -9,18 +9,29 @@ import ITodo from "../../types/ITodo/ITodo";
 
 type TodoPropsType = {
   options: ITodo;
+  completeHandler: (id: number) => void;
+  deleteHandler: (id: number) => void;
 };
 
 const Todo = (props: TodoPropsType) => {
-  const { title, date, text, filesUrl, isCompleted, isExpired } = props.options;
+  const { title, date, text, filesUrl, isCompleted, isExpired, id } =
+    props.options;
+  const { completeHandler, deleteHandler } = props;
   const classComplete = isCompleted ? styles.TodoComplete : undefined;
+  const classExpired = isExpired ? styles.TodoExpired : undefined;
+  function completeHandlerTodo() {
+    completeHandler(id);
+  }
+  function deleteHandlerTodo() {
+    deleteHandler(id);
+  }
   return (
-    <div className={styles.Todo + " " + classComplete}>
+    <div className={styles.Todo + " " + classComplete + " " + classExpired}>
       <div className={styles.MainInfo}>
-        <h2 className={styles.Header}>Задача &#183; {title}</h2>
+        <h2 className={styles.Header}>Задача &#183; {title + id}</h2>
         <div className={styles.RightAction}>
-          <EditSvg />
-          <DeleteSvg />
+          <EditSvg disabled={isExpired} />
+          <DeleteSvg onClick={deleteHandlerTodo} />
         </div>
       </div>
       <span className={styles.TextDate}>
@@ -29,10 +40,19 @@ const Todo = (props: TodoPropsType) => {
       <p className={styles.Text}>{text}</p>
       <div className={styles.Files}>
         {filesUrl.map((url) => {
-          return <FileSvg />;
+          return (
+            <>
+              <p>{url}</p>
+              <FileSvg disabled={isExpired} />
+            </>
+          );
         })}
       </div>
-      <Button>Выполенно</Button>
+      {!isCompleted && (
+        <Button onClick={completeHandlerTodo} disabled={isExpired}>
+          Выполенно
+        </Button>
+      )}
     </div>
   );
 };

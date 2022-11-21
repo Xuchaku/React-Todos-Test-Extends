@@ -8,6 +8,7 @@ import {
   initTodo,
   reducerTodo,
   setDateTodo,
+  setFilesTodo,
   setTextTodo,
   setTitleTodo,
 } from "../../utils";
@@ -16,6 +17,7 @@ import Action from "../../types/Action/Action";
 import dayjs from "dayjs";
 import Button from "../../UI/Button/Button";
 import TextArea from "../../UI/TextArea/TextArea";
+import InputFile from "../../UI/InputFile/InputFile";
 
 type FormTodoPropsType = {
   todos: ITodo[];
@@ -23,10 +25,17 @@ type FormTodoPropsType = {
 };
 
 const FormTodo = ({ todos, submit }: FormTodoPropsType) => {
-  // const [isValid, setIsValid] = useState(false);
   const { state, dispatchUsingMiddleware } = useReducerWithMiddleware(
     reducerTodo,
-    null,
+    {
+      id: todos.length,
+      title: "",
+      date: new Date(),
+      text: "",
+      filesUrl: [],
+      isCompleted: false,
+      isExpired: false,
+    },
     initTodo,
     isValidFunc
   );
@@ -39,6 +48,11 @@ const FormTodo = ({ todos, submit }: FormTodoPropsType) => {
       dispatchUsingMiddleware(action(value));
     };
   }
+  function changeFieldFiles(action: (value: string[]) => Action) {
+    return function (value: string[]) {
+      dispatchUsingMiddleware(action(value));
+    };
+  }
   function isValidText(
     event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
@@ -46,7 +60,6 @@ const FormTodo = ({ todos, submit }: FormTodoPropsType) => {
     return !!value;
   }
   function submitForm() {
-    console.log(state);
     submit(state);
   }
 
@@ -99,6 +112,9 @@ const FormTodo = ({ todos, submit }: FormTodoPropsType) => {
           onChange={changeFieldText(setTextTodo)}
           onBlur={isValidText}
         ></TextArea>
+      </div>
+      <div className={styles.FormElement}>
+        <InputFile uploadFile={changeFieldFiles(setFilesTodo)}></InputFile>
       </div>
       <Button onClick={submitForm}>Сохранить</Button>
     </div>
