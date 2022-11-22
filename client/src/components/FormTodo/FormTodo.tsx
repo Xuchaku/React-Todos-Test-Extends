@@ -4,83 +4,66 @@ import ITodo from "./../../types/ITodo/ITodo";
 import Input from "../../UI/Input/Input";
 import { FocusEvent } from "react";
 import {
-  classes,
-  initTodo,
-  reducerTodo,
   setDateTodo,
   setFilesTodo,
   setTextTodo,
   setTitleTodo,
-} from "../../utils";
-import { useReducerWithMiddleware } from "../../hooks/useReducerWithMiddleware";
+} from "../../utils/actionCreators";
 import Action from "../../types/Action/Action";
 import dayjs from "dayjs";
 import Button from "../../UI/Button/Button";
 import TextArea from "../../UI/TextArea/TextArea";
 import InputFile from "../../UI/InputFile/InputFile";
+import { reducerTodo } from "../../utils/reducer";
+import { initTodo, isValidDate, isValidText, parseDate } from "../../utils";
 
 type FormTodoPropsType = {
   todos: ITodo[];
-  submit: (todo: ITodo) => void;
+  addTodo: (todo: ITodo) => void;
+  targetTodo: ITodo | null;
+  changeTodo: (id: number, changedTodo: ITodo) => void;
 };
 
-const FormTodo = ({ todos, submit }: FormTodoPropsType) => {
-  const { state, dispatchUsingMiddleware } = useReducerWithMiddleware(
+const FormTodo = ({
+  todos,
+  addTodo,
+  targetTodo,
+  changeTodo,
+}: FormTodoPropsType) => {
+  const [todo, dispatch] = useReducer(
     reducerTodo,
-    {
-      id: todos.length,
-      title: "",
-      date: new Date(),
-      text: "",
-      filesUrl: [],
-      isCompleted: false,
-      isExpired: false,
-    },
-    initTodo,
-    isValidFunc
+    targetTodo || initTodo(todos)
   );
-  const [preDateString, setPreDateString] = useState("");
-  function changeFieldString(value: string) {
+  const [preDateString, setPreDateString] = useState(
+    dayjs(todo.date).format("YYYY.MM.DD")
+  );
+
+  function changeFieldStringDate(value: string) {
     setPreDateString(value);
+    if (isValidDate(value)) {
+      const { year, month, day } = parseDate(value);
+      dispatch(setDateTodo(new Date(year, month - 1, day)));
+    }
   }
   function changeFieldText(action: (value: string) => Action) {
     return function (value: string) {
-      dispatchUsingMiddleware(action(value));
+      dispatch(action(value));
     };
   }
   function changeFieldFiles(action: (value: string[]) => Action) {
     return function (value: string[]) {
-      dispatchUsingMiddleware(action(value));
+      dispatch(action(value));
     };
   }
-  function isValidText(
-    event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
-    const value = event.target.value;
-    return !!value;
-  }
-  function submitForm() {
-    submit(state);
-  }
 
-  function isValidDate(
-    event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
-    const value = event.target.value;
-    if (value && dayjs(value).isValid()) {
-      const year = Number(dayjs(value).format("YYYY"));
-      const month = Number(dayjs(value).format("MM"));
-      const day = Number(dayjs(value).format("DD"));
-      dispatchUsingMiddleware(setDateTodo(new Date(year, month, day)));
-      return true;
+  function submitForm() {
+    if (targetTodo) {
+      changeTodo(todo.id, todo);
     } else {
-      return false;
+      addTodo(todo);
     }
   }
 
-  function isValidFunc() {
-    return true;
-  }
   return (
     <div className={styles.FormTodo}>
       <div className={styles.FormElement}>
@@ -88,7 +71,7 @@ const FormTodo = ({ todos, submit }: FormTodoPropsType) => {
         <Input
           placeholder={"Введите название задачи"}
           type={"text"}
-          value={state.title}
+          value={todo.title}
           onChange={changeFieldText(setTitleTodo)}
           onBlur={isValidText}
         ></Input>
@@ -100,7 +83,7 @@ const FormTodo = ({ todos, submit }: FormTodoPropsType) => {
           placeholder={"Введите дату"}
           type={"text"}
           value={preDateString}
-          onChange={changeFieldString}
+          onChange={changeFieldStringDate}
           onBlur={isValidDate}
         ></Input>
       </div>
@@ -108,7 +91,7 @@ const FormTodo = ({ todos, submit }: FormTodoPropsType) => {
         <p>Описание</p>
         <TextArea
           placeholder={"Введите описание"}
-          value={state.text}
+          value={todo.text}
           onChange={changeFieldText(setTextTodo)}
           onBlur={isValidText}
         ></TextArea>

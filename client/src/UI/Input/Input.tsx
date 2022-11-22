@@ -8,7 +8,7 @@ type InputTypeProps = {
   value: string;
   type: string;
   onChange: (value: string) => void;
-  onBlur?: (event: FocusEvent<HTMLInputElement>) => boolean;
+  onBlur?: (value: string) => boolean;
   placeholder: string;
   messageError?: string;
 };
@@ -34,7 +34,7 @@ const Input = forwardRef<HTMLInputElement, InputTypeProps>(
     }
     function handlerBlur(event: FocusEvent<HTMLInputElement>) {
       if (onBlur) {
-        const isValid = onBlur(event);
+        const isValid = onBlur(event.target.value);
         if (!isValid) {
           setIsValidSelf(false);
         } else {

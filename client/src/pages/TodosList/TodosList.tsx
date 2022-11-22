@@ -12,7 +12,7 @@ const TodosList = () => {
     {
       id: 0,
       title: "Сделать еду",
-      date: new Date(2025, 0, 28),
+      date: new Date(2023, 1, 28),
       text: "Some text",
       filesUrl: ["1", "2"],
       isCompleted: false,
@@ -37,6 +37,7 @@ const TodosList = () => {
       isExpired: false,
     },
   ]);
+  const [currentEditTodo, setCurrentEditTodo] = useState<ITodo | null>(null);
   useLayoutEffect(() => {
     const expiredTodos = [...todos].map((todo) => {
       const isExpired = dayjs(todo.date).isBefore(new Date());
@@ -59,18 +60,40 @@ const TodosList = () => {
   }
   function closePopup() {
     setIsOpen(false);
+    setCurrentEditTodo(null);
   }
   function openModal() {
     setIsOpen(true);
   }
   function addTodo(todo: ITodo) {
     setTodos([...todos, todo]);
+    closePopup();
   }
-  const [isOpen, setIsOpen] = useState(true);
+  function choseTargetToEdit(id: number) {
+    const targetTodo = todos.find((todo) => todo.id == id);
+    if (targetTodo) setCurrentEditTodo(targetTodo);
+  }
+  function changeTodoById(id: number, changedTodo: ITodo) {
+    const currentTodo = todos.find((todo) => todo.id == id);
+    const todoIndex = todos.findIndex((todo) => todo.id == id);
+    if (currentTodo) {
+      const changedTodos = [...todos];
+      changedTodos.splice(todoIndex, 1, { ...changedTodo });
+      setTodos(changedTodos);
+      setCurrentEditTodo(null);
+      closePopup();
+    }
+  }
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <>
       <Popup onClose={closePopup} isOpened={isOpen}>
-        <FormTodo todos={todos} submit={addTodo} />
+        <FormTodo
+          todos={todos}
+          addTodo={addTodo}
+          changeTodo={changeTodoById}
+          targetTodo={currentEditTodo}
+        />
       </Popup>
       <div className={styles.Container}>
         <Button shape="cirle" onClick={openModal}>
@@ -80,6 +103,8 @@ const TodosList = () => {
           todos.map((todo) => {
             return (
               <Todo
+                choseTargetToEdit={choseTargetToEdit}
+                openModalHandler={openModal}
                 completeHandler={completeTotoById}
                 deleteHandler={deleteTodoById}
                 key={todo.id}

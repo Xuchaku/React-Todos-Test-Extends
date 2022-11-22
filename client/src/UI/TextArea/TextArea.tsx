@@ -7,7 +7,7 @@ type TextAreaPropsType = {
   value: string;
   messageError?: string;
   onChange: (value: string) => void;
-  onBlur?: (event: FocusEvent<HTMLTextAreaElement>) => boolean;
+  onBlur?: (value: string) => boolean;
   placeholder: string;
 };
 
@@ -27,7 +27,7 @@ const TextArea = ({
   }
   function handlerBlur(event: FocusEvent<HTMLTextAreaElement>) {
     if (onBlur) {
-      const isValid = onBlur(event);
+      const isValid = onBlur(event.target.value);
       if (!isValid) {
         setIsValidSelf(false);
       } else {

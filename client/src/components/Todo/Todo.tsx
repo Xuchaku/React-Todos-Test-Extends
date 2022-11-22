@@ -11,12 +11,19 @@ type TodoPropsType = {
   options: ITodo;
   completeHandler: (id: number) => void;
   deleteHandler: (id: number) => void;
+  openModalHandler: () => void;
+  choseTargetToEdit: (id: number) => void;
 };
 
 const Todo = (props: TodoPropsType) => {
   const { title, date, text, filesUrl, isCompleted, isExpired, id } =
     props.options;
-  const { completeHandler, deleteHandler } = props;
+  const {
+    completeHandler,
+    deleteHandler,
+    openModalHandler,
+    choseTargetToEdit,
+  } = props;
   const classComplete = isCompleted ? styles.TodoComplete : undefined;
   const classExpired = isExpired ? styles.TodoExpired : undefined;
   function completeHandlerTodo() {
@@ -25,17 +32,21 @@ const Todo = (props: TodoPropsType) => {
   function deleteHandlerTodo() {
     deleteHandler(id);
   }
+  function editHandlerTodo() {
+    choseTargetToEdit(id);
+    openModalHandler();
+  }
   return (
     <div className={styles.Todo + " " + classComplete + " " + classExpired}>
       <div className={styles.MainInfo}>
         <h2 className={styles.Header}>Задача &#183; {title + id}</h2>
         <div className={styles.RightAction}>
-          <EditSvg disabled={isExpired} />
+          <EditSvg onClick={editHandlerTodo} disabled={isExpired} />
           <DeleteSvg onClick={deleteHandlerTodo} />
         </div>
       </div>
       <span className={styles.TextDate}>
-        До &#183; {dayjs(date).format("DD.MM.YYYY")}
+        До &#183; {dayjs(date).format("YYYY.MM.DD")}
       </span>
       <p className={styles.Text}>{text}</p>
       <div className={styles.Files}>
