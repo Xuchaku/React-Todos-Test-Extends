@@ -26,12 +26,15 @@ const Input = forwardRef<HTMLInputElement, InputTypeProps>(
     ref
   ) => {
     const [isValidSelf, setIsValidSelf] = useState(true);
+
     const extendClasses = isValidSelf
       ? [styles.Input]
       : [styles.Input, styles.Error];
+
     function handlerChange(event: ChangeEvent<HTMLInputElement>) {
       onChange(event.target.value);
     }
+
     function handlerBlur(event: FocusEvent<HTMLInputElement>) {
       if (onBlur) {
         const isValid = onBlur(event.target.value);
@@ -42,6 +45,7 @@ const Input = forwardRef<HTMLInputElement, InputTypeProps>(
         }
       }
     }
+
     return (
       <div className={styles.ContainerInput}>
         <input

@@ -19,12 +19,15 @@ const TextArea = ({
   onBlur,
 }: TextAreaPropsType) => {
   const [isValidSelf, setIsValidSelf] = useState(true);
+
   const extendClasses = isValidSelf
     ? [styles.TextArea]
     : [styles.TextArea, styles.Error];
+
   function handlerChange(event: ChangeEvent<HTMLTextAreaElement>) {
     onChange(event.target.value);
   }
+
   function handlerBlur(event: FocusEvent<HTMLTextAreaElement>) {
     if (onBlur) {
       const isValid = onBlur(event.target.value);
@@ -35,6 +38,7 @@ const TextArea = ({
       }
     }
   }
+
   return (
     <div className={styles.ContainerTextArea}>
       <textarea

@@ -1,29 +1,22 @@
-import React, {
-  useContext,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
-import styles from "./FormTodo.module.less";
+import React, { useContext, useReducer, useState } from "react";
+import dayjs from "dayjs";
+import { reducerTodo } from "../../utils/reducer";
+import { initTodo, isValidDate, isValidText, parseDate } from "../../utils";
+import { api } from "../../API";
+import { DataBaseContext } from "../../context";
 import ITodo from "./../../types/ITodo/ITodo";
-import Input from "../../UI/Input/Input";
-import { FocusEvent } from "react";
+import Action from "../../types/Action/Action";
 import {
   setDateTodo,
   setFilesTodo,
   setTextTodo,
   setTitleTodo,
 } from "../../utils/actionCreators";
-import Action from "../../types/Action/Action";
-import dayjs from "dayjs";
 import Button from "../../UI/Button/Button";
 import TextArea from "../../UI/TextArea/TextArea";
 import InputFile from "../../UI/InputFile/InputFile";
-import { reducerTodo } from "../../utils/reducer";
-import { initTodo, isValidDate, isValidText, parseDate } from "../../utils";
-import { api } from "../../API";
-import { DataBaseContext } from "../../context";
+import Input from "../../UI/Input/Input";
+import styles from "./FormTodo.module.less";
 
 type FormTodoPropsType = {
   todos: ITodo[];

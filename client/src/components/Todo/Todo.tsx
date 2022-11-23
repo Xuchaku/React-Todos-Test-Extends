@@ -1,11 +1,12 @@
 import React from "react";
 import dayjs from "dayjs";
-import styles from "./Todo.module.less";
+import ITodo from "../../types/ITodo/ITodo";
 import { ReactComponent as EditSvg } from "./../../assets/svgs/edit-svgrepo-com.svg";
 import { ReactComponent as DeleteSvg } from "./../../assets/svgs/delete-svgrepo-com.svg";
 import { ReactComponent as FileSvg } from "./../../assets/svgs/file-svgrepo-com.svg";
 import Button from "../../UI/Button/Button";
-import ITodo from "../../types/ITodo/ITodo";
+import styles from "./Todo.module.less";
+import { classes } from "../../utils";
 
 type TodoPropsType = {
   options: ITodo;
@@ -26,6 +27,7 @@ const Todo = (props: TodoPropsType) => {
   } = props;
   const classComplete = isCompleted ? styles.TodoComplete : undefined;
   const classExpired = isExpired ? styles.TodoExpired : undefined;
+  const computedClasses = classes(styles.Todo, classComplete, classExpired);
   function completeHandlerTodo() {
     completeHandler(id);
   }
@@ -37,7 +39,7 @@ const Todo = (props: TodoPropsType) => {
     openModalHandler();
   }
   return (
-    <div className={styles.Todo + " " + classComplete + " " + classExpired}>
+    <div className={computedClasses}>
       <div className={styles.MainInfo}>
         <h2 className={styles.Header}>Задача &#183; {title + id}</h2>
         <div className={styles.RightAction}>

@@ -1,9 +1,10 @@
 import React, { ReactElement } from "react";
+import { classes } from "../../utils";
 import styles from "./Button.module.less";
 
 type ButtonPropsType = {
   children: string | ReactElement | null;
-  shape?: "cirle" | "rect";
+  shape?: "circle" | "rect";
   onClick?: () => void;
   disabled?: boolean;
 };
@@ -14,12 +15,12 @@ const Button = ({
   onClick,
   disabled = false,
 }: ButtonPropsType) => {
-  const styleShape = shape == "cirle" ? styles.Cirle : styles.Rect;
+  const styleShape = shape == "circle" ? styles.Cirle : styles.Rect;
   return (
     <button
       onClick={onClick}
       disabled={disabled}
-      className={styles.Button + " " + styleShape}
+      className={classes(styles.Button, styleShape)}
     >
       {children}
     </button>

@@ -8,7 +8,9 @@ type InputFileTypeProps = {
 
 const InputFile = (props: InputFileTypeProps) => {
   const { uploadFile } = props;
+
   const id = useId();
+
   function uploadFilesHandler(event: ChangeEvent<HTMLInputElement>) {
     const { files } = event.target;
     if (files) {
@@ -20,6 +22,7 @@ const InputFile = (props: InputFileTypeProps) => {
       uploadFile(filesArr);
     }
   }
+
   return (
     <div className={styles.InputFileContainer}>
       <label htmlFor={id}>

@@ -1,4 +1,3 @@
-import ITodo from "../types/ITodo/ITodo";
 import {
   deleteDoc,
   doc,
@@ -7,6 +6,7 @@ import {
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
+import ITodo from "../types/ITodo/ITodo";
 
 class API {
   constructor() {}
