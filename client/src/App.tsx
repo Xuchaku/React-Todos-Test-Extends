@@ -1,16 +1,24 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 import styles from "./App.module.less";
 import TodosList from "./pages/TodosList/TodosList";
+import { firebaseConfig } from "./utils";
+import { DataBaseContext } from "./context";
+import { Firestore } from "@firebase/firestore";
 
 function App() {
+  const [firebaseApp, setFirebaseApp] = useState(initializeApp(firebaseConfig));
+  const [dataBase, setDataBase] = useState<Firestore>(
+    getFirestore(firebaseApp)
+  );
+
   return (
-    <div className={styles.App}>
-      <Routes>
-        <Route path="/" element={<TodosList />}></Route>
-        <Route path="/todo/:id" element={null}></Route>
-      </Routes>
-    </div>
+    <DataBaseContext.Provider value={dataBase}>
+      <div className={styles.App}>
+        <TodosList />
+      </div>
+    </DataBaseContext.Provider>
   );
 }
 

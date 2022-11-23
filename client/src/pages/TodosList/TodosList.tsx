@@ -1,62 +1,52 @@
 import dayjs from "dayjs";
-import React, { useLayoutEffect, useState } from "react";
+import { collection, getFirestore } from "firebase/firestore";
+import React, { useContext, useLayoutEffect, useState } from "react";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { api } from "../../API";
 import FormTodo from "../../components/FormTodo/FormTodo";
 import Todo from "../../components/Todo/Todo";
+import { DataBaseContext } from "../../context";
 import ITodo from "../../types/ITodo/ITodo";
 import Button from "../../UI/Button/Button";
 import Popup from "../../UI/Popup/Popup";
 import styles from "./TodosList.module.less";
 
 const TodosList = () => {
-  const [todos, setTodos] = useState<ITodo[]>([
-    {
-      id: 0,
-      title: "Сделать еду",
-      date: new Date(2023, 1, 28),
-      text: "Some text",
-      filesUrl: ["1", "2"],
-      isCompleted: false,
-      isExpired: false,
-    },
-    {
-      id: 1,
-      title: "Сделать еду",
-      date: new Date(2018, 1, 2),
-      text: "Some text",
-      filesUrl: ["1", "2"],
-      isCompleted: false,
-      isExpired: false,
-    },
-    {
-      id: 2,
-      title: "Сделать еду",
-      date: new Date(),
-      text: "Some text",
-      filesUrl: ["1", "2"],
-      isCompleted: false,
-      isExpired: false,
-    },
-  ]);
+  const [todos, setTodos] = useState<ITodo[]>([]);
+  const dataBase = useContext(DataBaseContext);
   const [currentEditTodo, setCurrentEditTodo] = useState<ITodo | null>(null);
+  const [valuesFromBack, loading, error] = useCollection(
+    collection(dataBase, "todos")
+  );
+
   useLayoutEffect(() => {
-    const expiredTodos = [...todos].map((todo) => {
-      const isExpired = dayjs(todo.date).isBefore(new Date());
-      console.log(isExpired);
-      return { ...todo, isExpired };
-    });
-    setTodos(expiredTodos);
-  }, []);
+    if (!loading) {
+      const todosFromBack = valuesFromBack?.docs.map((doc) => {
+        const data = doc.data();
+        return { ...doc.data(), date: new Date(data.date.seconds * 1000) };
+      });
+      const expiredTodos = [...(todosFromBack as ITodo[])].map((todo) => {
+        const isExpired = dayjs(todo.date).isBefore(new Date());
+        return { ...todo, isExpired };
+      });
+      setTodos(expiredTodos);
+    }
+  }, [loading]);
+
   function completeTotoById(id: number) {
     const currentTodo = todos.find((todo) => todo.id == id);
     const todoIndex = todos.findIndex((todo) => todo.id == id);
     if (currentTodo) {
       const changedTodos = [...todos];
-      changedTodos.splice(todoIndex, 1, { ...currentTodo, isCompleted: true });
+      const changedTodo = { ...currentTodo, isCompleted: true };
+      changedTodos.splice(todoIndex, 1, changedTodo);
       setTodos(changedTodos);
+      api.updateTodoById(dataBase, id, { isCompleted: true });
     }
   }
   function deleteTodoById(id: number) {
     setTodos([...todos].filter((todo) => todo.id != id));
+    api.deleteTodoById(dataBase, id);
   }
   function closePopup() {
     setIsOpen(false);

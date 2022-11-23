@@ -1,4 +1,10 @@
-import React, { useMemo, useReducer, useRef, useState } from "react";
+import React, {
+  useContext,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import styles from "./FormTodo.module.less";
 import ITodo from "./../../types/ITodo/ITodo";
 import Input from "../../UI/Input/Input";
@@ -16,6 +22,8 @@ import TextArea from "../../UI/TextArea/TextArea";
 import InputFile from "../../UI/InputFile/InputFile";
 import { reducerTodo } from "../../utils/reducer";
 import { initTodo, isValidDate, isValidText, parseDate } from "../../utils";
+import { api } from "../../API";
+import { DataBaseContext } from "../../context";
 
 type FormTodoPropsType = {
   todos: ITodo[];
@@ -30,6 +38,7 @@ const FormTodo = ({
   targetTodo,
   changeTodo,
 }: FormTodoPropsType) => {
+  const dataBase = useContext(DataBaseContext);
   const [todo, dispatch] = useReducer(
     reducerTodo,
     targetTodo || initTodo(todos)
@@ -59,8 +68,10 @@ const FormTodo = ({
   function submitForm() {
     if (targetTodo) {
       changeTodo(todo.id, todo);
+      api.putTodo(dataBase, todo);
     } else {
       addTodo(todo);
+      api.addTodo(dataBase, todo);
     }
   }
 
