@@ -6,7 +6,7 @@
   background-color: white;
   display: flex;
   flex-direction: column;
-  & > :last-child {
+  & > button:last-child {
     align-self: flex-end;
   }
   .Header {
@@ -39,6 +39,7 @@
 }
 .Files {
   display: flex;
+  flex-wrap: wrap;
   column-gap: 10px;
   svg {
     width: 20px;
@@ -56,6 +57,8 @@
   align-items: center;
   .RightAction {
     margin-left: auto;
+    display: flex;
+    flex-wrap: nowrap;
   }
   svg {
     cursor: pointer;
@@ -66,5 +69,23 @@
   }
   svg[disabled] {
     fill: @font-dark-color;
+  }
+}
+
+.File {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 12px;
+  align-items: center;
+  p {
+    font-family: @family-headers;
+    font-size: 12px;
+    color: @font-gray-color;
+  }
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: @bg-ui;
   }
 }

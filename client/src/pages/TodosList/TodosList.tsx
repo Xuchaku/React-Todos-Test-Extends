@@ -11,6 +11,7 @@ import Button from "../../UI/Button/Button";
 import Popup from "../../UI/Popup/Popup";
 
 import styles from "./TodosList.module.less";
+import Loader from "../../UI/Loader/Loader";
 
 const TodosList = () => {
   const [todos, setTodos] = useState<ITodo[]>([]);
@@ -98,7 +99,9 @@ const TodosList = () => {
         <Button shape="circle" onClick={openModal}>
           +
         </Button>
-        {todos.length > 0 ? (
+        {loading ? (
+          <Loader />
+        ) : todos.length > 0 ? (
           todos.map((todo) => {
             return (
               <Todo

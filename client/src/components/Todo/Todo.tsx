@@ -35,13 +35,15 @@ const Todo = (props: TodoPropsType) => {
     deleteHandler(id);
   }
   function editHandlerTodo() {
-    choseTargetToEdit(id);
-    openModalHandler();
+    if (!isExpired) {
+      choseTargetToEdit(id);
+      openModalHandler();
+    }
   }
   return (
     <div className={computedClasses}>
       <div className={styles.MainInfo}>
-        <h2 className={styles.Header}>Задача &#183; {title + id}</h2>
+        <h2 className={styles.Header}>Задача &#183; {title}</h2>
         <div className={styles.RightAction}>
           <EditSvg onClick={editHandlerTodo} disabled={isExpired} />
           <DeleteSvg onClick={deleteHandlerTodo} />
@@ -54,10 +56,10 @@ const Todo = (props: TodoPropsType) => {
       <div className={styles.Files}>
         {filesUrl.map((url) => {
           return (
-            <>
-              <p>{url}</p>
+            <div className={styles.File}>
               <FileSvg disabled={isExpired} />
-            </>
+              <p>{url}</p>
+            </div>
           );
         })}
       </div>

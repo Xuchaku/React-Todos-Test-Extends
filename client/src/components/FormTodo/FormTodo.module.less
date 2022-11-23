@@ -10,11 +10,37 @@
   display: flex;
   align-items: center;
   column-gap: 24px;
+  width: 100%;
   white-space: nowrap;
-  p {
+  & > p {
     min-width: 120px;
     font-family: @family-headers;
     font-size: 24px;
     color: @font-gray-color;
+  }
+}
+.Files {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 24px;
+}
+.File {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 12px;
+  align-items: center;
+  span {
+    font-family: @family-headers;
+    font-size: 12px;
+    color: @font-gray-color;
+  }
+  & > svg:last-child {
+    cursor: pointer;
+  }
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: @bg-ui;
   }
 }

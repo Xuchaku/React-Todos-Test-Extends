@@ -1,7 +1,13 @@
 import React, { useContext, useReducer, useState } from "react";
 import dayjs from "dayjs";
 import { reducerTodo } from "../../utils/reducer";
-import { initTodo, isValidDate, isValidText, parseDate } from "../../utils";
+import {
+  classes,
+  initTodo,
+  isValidDate,
+  isValidText,
+  parseDate,
+} from "../../utils";
 import { api } from "../../API";
 import { DataBaseContext } from "../../context";
 import ITodo from "./../../types/ITodo/ITodo";
@@ -12,6 +18,8 @@ import {
   setTextTodo,
   setTitleTodo,
 } from "../../utils/actionCreators";
+import { ReactComponent as FileSvg } from "./../../assets/svgs/file-svgrepo-com.svg";
+import { ReactComponent as DeleteSvg } from "./../../assets/svgs/delete-svgrepo-com.svg";
 import Button from "../../UI/Button/Button";
 import TextArea from "../../UI/TextArea/TextArea";
 import InputFile from "../../UI/InputFile/InputFile";
@@ -54,7 +62,15 @@ const FormTodo = ({
   }
   function changeFieldFiles(action: (value: string[]) => Action) {
     return function (value: string[]) {
-      dispatch(action(value));
+      dispatch(action([...todo.filesUrl, ...value]));
+    };
+  }
+  function deleteFile(fileName: string) {
+    return function () {
+      const filteredFiles = [...todo.filesUrl].filter(
+        (file) => file != fileName
+      );
+      dispatch(setFilesTodo(filteredFiles));
     };
   }
 
@@ -102,6 +118,17 @@ const FormTodo = ({
       </div>
       <div className={styles.FormElement}>
         <InputFile uploadFile={changeFieldFiles(setFilesTodo)}></InputFile>
+      </div>
+      <div className={classes(styles.FormElement, styles.Files)}>
+        {todo.filesUrl.map((file) => {
+          return (
+            <div className={styles.File}>
+              <FileSvg></FileSvg>
+              <span>{file}</span>
+              <DeleteSvg onClick={deleteFile(file)}></DeleteSvg>
+            </div>
+          );
+        })}
       </div>
       <Button onClick={submitForm}>Сохранить</Button>
     </div>
