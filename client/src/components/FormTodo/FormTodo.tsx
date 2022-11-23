@@ -74,7 +74,8 @@ const FormTodo = ({
     };
   }
 
-  function submitForm() {
+  function submitForm(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     if (targetTodo) {
       changeTodo(todo.id, todo);
       api.putTodo(dataBase, todo);
@@ -85,7 +86,7 @@ const FormTodo = ({
   }
 
   return (
-    <div className={styles.FormTodo}>
+    <form onSubmit={submitForm} className={styles.FormTodo}>
       <div className={styles.FormElement}>
         <p>Название</p>
         <Input
@@ -130,8 +131,8 @@ const FormTodo = ({
           );
         })}
       </div>
-      <Button onClick={submitForm}>Сохранить</Button>
-    </div>
+      <Button type="submit">Сохранить</Button>
+    </form>
   );
 };
 

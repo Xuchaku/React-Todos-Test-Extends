@@ -7,6 +7,7 @@ type ButtonPropsType = {
   shape?: "circle" | "rect";
   onClick?: () => void;
   disabled?: boolean;
+  type?: "button" | "submit";
 };
 
 const Button = ({
@@ -14,10 +15,12 @@ const Button = ({
   shape = "rect",
   onClick,
   disabled = false,
+  type = "button",
 }: ButtonPropsType) => {
   const styleShape = shape == "circle" ? styles.Cirle : styles.Rect;
   return (
     <button
+      type={type}
       onClick={onClick}
       disabled={disabled}
       className={classes(styles.Button, styleShape)}
