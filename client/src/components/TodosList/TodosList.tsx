@@ -5,8 +5,8 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import ITodo from "../../types/ITodo/ITodo";
 import { api } from "../../API";
 import { DataBaseContext } from "../../context";
-import FormTodo from "../../components/FormTodo/FormTodo";
-import Todo from "../../components/Todo/Todo";
+import FormTodo from "../FormTodo/FormTodo";
+import Todo from "../Todo/Todo";
 import Button from "../../UI/Button/Button";
 import Popup from "../../UI/Popup/Popup";
 

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import styles from "./App.module.less";
-import TodosList from "./pages/TodosList/TodosList";
+import TodosList from "./components/TodosList/TodosList";
 import { firebaseConfig } from "./utils";
 import { DataBaseContext } from "./context";
 import { Firestore } from "@firebase/firestore";
